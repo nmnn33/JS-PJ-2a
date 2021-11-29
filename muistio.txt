@@ -1,0 +1,4 @@
+//sivu
+https://www.last.fm/api/
+//kortti
+https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Card

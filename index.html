@@ -8,11 +8,34 @@
     <title>Musiikkian</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+<!-- Nämä ovat importteja last.fm APi varten + oma js tiedosto-->
+<script type="text/javascript" src="lastfm.api.md5.js"></script>
+<script type="text/javascript" src="lastfm.api.js"></script>
+<script type="text/javascript" src="lastfm.api.cache.js"></script>
 
 <script src="js.js"></script>
 
 <body>
+    <!--Container div sisältää kaikki sisältö-->
     <div id="container">
+        <!--Div missä on search artist-->
+        <div id="searchA">
+            <label for="searchArtist">Search for an artist on Last.fm:</label>
+            <input type="text" id="searchArtistField" name="searchArtistField" value="Type here...."></input>
+            <button type="button" name="btnSearch" id="btnSearch">Search</button>
+        </div>
+
+        <br><br>
+        <div id="informant"><h2>The albums of your searched artist:</h2></div>
+        <!--Div missä on search artistTopAlbum tulostukset-->
+        <div id="searchResults">
+        </div>
+
+        <br><br>
+
+        <!--Div jossa on Albumin kappaleet, kun painaa albumi kortteja-->
+        <div id="albumKappaleet">
+        </div>
 
     </div>
 </body>
