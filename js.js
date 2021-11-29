@@ -5,19 +5,50 @@ window.onload = function () {
 }
 
 //Jokaiselle imagelle event, joka tulostaa albumin kappaleet
-document.addEventListener('click', function (e) {
-    if (e.target.tagName == "IMG") {
-        document.getElementById("")
-        lastfm.album.getInfo({ album:  }, {
+/*document.addEventListener('click', function (e) {
+    if (e.target.tagName == "H4") {
+        lastfm.album.getInfo({ artist: 'Megadeth', album: 'Rude Awakening' }, {
             success: function (data) {
-
+                console.log(data);
+                var albumArtist = document.getElementsByClassName("");
                 //vain jos error
             }, error: function (code, message) {
                 console.log("jotain meni pieleen.")
             }
         });
     }
-});
+});*/
+
+//Kun klikataan h4 elementti, tuodaan albumin kappaleet esiin DIV:iin
+function kappaleet(artist, albumi) {
+    lastfm.album.getInfo({ artist: artist, album: albumi }, {
+        success: function (data) {
+            console.log(data)
+            var txt = '<h2>Album´s Tracks:</h3><ol id="listOrdered">';
+            var list = document.getElementById("albumKappaleet");
+            var kappaleet = data["album"]["tracks"];
+            //Jos ei kappaleita niin tulostaa tämän tekstin
+            if (kappaleet == null || kappaleet == undefined) {
+                list.innerHTML = "No Tracks available for this album.";
+                }
+            //For loop joka tekee ordered listan jonka upotaa DIV:n kappaleet numeroittain.
+            for(var i = 0; i < kappaleet["track"].length; i++) {
+                txt += '<li>'+kappaleet["track"][i]["name"]+'</li>';
+            }
+            txt += '</ol>';
+            //Jos ei kappaleita niin tulostaa tämän tekstin, tarvitaan jos läpäisee ensimmäisen IF tarkastuksen
+            if (txt != '<h2>Album´s Tracks:</h3><ol id="listOrdered"></ol>') {
+            list.innerHTML = txt;
+            } else {
+                list.innerHTML = "No Tracks available for this album.";
+            }
+            //vain jos error
+        }, error: function (code, message) {
+            console.log("jotain meni pieleen.")
+        }
+    });
+    
+}
 
 /* Create a cache object */
 var cache = new LastFMCache();
@@ -49,16 +80,6 @@ function searchArtist() {
             //Json datasta artisti
             var artist = data["results"]["artistmatches"]["artist"];
             var list = document.getElementById("searchResults");
-            /*Testi, joka tulostaa search tulokset listaan DIV:iin
-            //txt , johon tulee meidän ol elementti ja artistien nimet
-            var txt = '<ol id="listOrdered">';
-            //Loop , syntyy ol lista täynnä artistien nimiä, jotaka upotetaan div
-            for(var i = 0; i < artist.length; i++) {
-                txt += '<li>'+artist[i]["name"]+'</li>';
-            }
-            txt += '</ol>';
-            list.innerHTML = txt;
-            */
             var name = artist[0]["name"];
             //Toinen funktio, joka saa artistin nimen parametriksi
             albumiTop(name, list);
@@ -78,9 +99,11 @@ function albumiTop(name, list) {
             var albumi = data["topalbums"]["album"];
             //txt tulee kaikki, joka upotetaan DIV searchResults HTML:n. Kyseessä kortteja albumi nimi + kuva + kappaleet
             var txt = '<div class="cards">';
-            //albumi nimi, kuva, kappaleet kortteihin for LOOP
+            //albumi nimi, kuva, kappaleet kortteihin for LOOP. h4 elementti saa luokakseen artist nimen ja albumi nimen kappaleet tulostus funktiota varten
             for (var i = 0; i < albumi.length; i++) {
-                txt += '<article class="card"><header><h4>' + albumi[i]["name"] + '</h4></header>';
+                txt += '<article class="card"><header class="'+data["topalbums"]["@attr"]["artist"]+'" '
+                +'id="'+albumi[i]["name"]
+                +'" onclick="kappaleet(this.className, this.id)"><h4>' + albumi[i]["name"] + '</h4></header>';
                 //Jos kuva ei saatavilla, korvaa se sen virhe kuvalla
                 if (albumi[i]["image"][2]["#text"] != "") {
                     txt += '<img src="' + albumi[i]["image"][2]["#text"] + '">';
@@ -99,3 +122,19 @@ function albumiTop(name, list) {
         }
     });
 }
+
+
+
+
+
+
+/*Testi, joka tulostaa search tulokset listaan DIV:iin
+            //txt , johon tulee meidän ol elementti ja artistien nimet
+            var txt = '<ol id="listOrdered">';
+            //Loop , syntyy ol lista täynnä artistien nimiä, jotaka upotetaan div
+            for(var i = 0; i < artist.length; i++) {
+                txt += '<li>'+artist[i]["name"]+'</li>';
+            }
+            txt += '</ol>';
+            list.innerHTML = txt;
+            */
