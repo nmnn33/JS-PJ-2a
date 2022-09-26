@@ -8,3 +8,5 @@ Tässä nettisivussa on käytetty last.fm API:a hyväksi saadakseen artistin, t�
 Sivun periaatteena on antaa käyttäjän syöttää artistin nimi kenttään, joka tekee haun toiminnolla artist.search. Sen jälkeen suoritetaan artist.getTopAlbums, joka tulostaa näyttöön albumien nimet + kuvat kortteina. 
 
 Korttien albumi nimiin voi klikata, ja se suorittaa album.getInfo, josta saadaan albumin kappaleet tulostettua näytölle.
+
+Netlify host: https://app.netlify.com/sites/lucid-lumiere-4d85ba/overview
